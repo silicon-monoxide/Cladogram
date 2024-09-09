@@ -1,4 +1,4 @@
-# imported to allow for proper conversion of the user's input into a list, since pythons standard functions will not work
+# import to allow for proper conversion of the user's input into a list, since pythons standard functions will not work
 import json
 #tk import
 import tkinter as tk
