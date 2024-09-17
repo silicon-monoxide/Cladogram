@@ -2,6 +2,7 @@
 import json
 #tk import
 import tkinter as tk
+from tkinter import font as tkfont
 
 #Creating the dictionaries that contain all the information for each clade
 clade_name = {}
@@ -119,20 +120,22 @@ def generate_cladogram(instructions):
     return key
 
 def calculate_dimensions():
-    global leaf_list
+    # global leaf_list
 
-    # a list of the lengths of each name in the list
-    total = 0
+    # # a list of the lengths of each name in the list
+    # total = 0
 
-    #adds the name lengths to the list
-    for leaf in leaf_list:
-        total += (len(clade_name[leaf]))
-    # takes the maximum and then sets it to the appropriate units
-    if total > 15:
-        total = int(total*10)
-        return total
-    else:
-        return 150
+    # #adds the name lengths to the list
+    # for leaf in leaf_list:
+    #     total += (len(clade_name[leaf]))
+    # # takes the maximum and then sets it to the appropriate units
+    # if total > 15:
+    #     total = int(total*10)
+    #     return total
+    # else:
+    #     return 150
+
+    return 800
 
 
 # checks for errors
@@ -277,6 +280,17 @@ def draw_cladogram(clade):
         draw_connection(clade, child)
         draw_cladogram(child)
 
+def calculate_font_size(string, leaf_count):
+    proportion = 1/leaf_count
+    default_max = 16
+
+    result = (60*default_max*proportion)/len(string)
+
+    if result > default_max:
+        return default_max
+    else:
+        return int(result)
+
 def write_leaves(leaf_list):
     global offset_x
     global offset_y
@@ -289,7 +303,11 @@ def write_leaves(leaf_list):
     for leaf in leaf_list:
         text_position = clade_position[leaf]*scale_x + offset_x
         name = clade_name[leaf]
-        canvas.create_text(text_position, text_height, text=name, fill=text_colour)
+
+        # generates a font to write the leaf
+        size = calculate_font_size(clade_name[leaf], len(leaf_list))
+        font = tkfont.Font(family="Consolas", size=size)
+        canvas.create_text(text_position, text_height, text=name, fill=text_colour, font=font)
 
 
 
