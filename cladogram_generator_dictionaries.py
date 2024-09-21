@@ -243,36 +243,53 @@ def draw_connection(parent, child):
     global connection_colour
 
     # calculates the height in pixels
-    parent_height = (max_y - clade_height[parent])*scale_y + offset_y - (rectangle_width/2)
-    child_height = (max_y - clade_height[child])*scale_y + offset_y # + (rectangle_width/2)
+    parent_y = (max_y - clade_height[parent])*scale_y + offset_y - (rectangle_width/2)
+    child_y = (max_y - clade_height[child])*scale_y + offset_y # + (rectangle_width/2)
 
-    # if the position of the parent is higher than that of the child, do things one way. If it is lower, do the same thing but with the sign flipped for things being added to the position. 
+    # if the x position of the parent is higher than that of the child, do things one way. If it is lower, do the same thing but with the sign flipped for things being added to the position. 
     # If it is the same, don't draw the horisontal rectangle
     if clade_position[parent] > clade_position[child]:
         # calculates the position in pixels
-        parent_position = clade_position[parent]*scale_x + offset_x + (rectangle_width/2)
-        child_position = clade_position[child]*scale_x + offset_x - (rectangle_width/2)
+        parent_x = clade_position[parent]*scale_x + offset_x + (rectangle_width/2)
+        child_x = clade_position[child]*scale_x + offset_x - (rectangle_width/2)
 
         #draws the first (horizontal) rectangle
-        canvas.create_rectangle((parent_position, parent_height), (child_position, (parent_height + rectangle_width)), fill=connection_colour, outline=connection_colour)
+        canvas.create_rectangle((parent_x, parent_y), 
+                                (child_x, (parent_y + rectangle_width)), 
+                                fill=connection_colour, 
+                                outline=connection_colour)
         #draws the second (vertical) rectangle
-        canvas.create_rectangle(((child_position + rectangle_width), parent_height), (child_position, child_height), fill=connection_colour, outline=connection_colour)
+        canvas.create_rectangle(((child_x + rectangle_width), parent_y), 
+                                (child_x, child_y), 
+                                fill=connection_colour, 
+                                outline=connection_colour)
+        
     elif clade_position[parent] < clade_position[child]:
         # calculates the position in pixels
-        parent_position = clade_position[parent]*scale_x + offset_x - (rectangle_width/2)
-        child_position = clade_position[child]*scale_x + offset_x + (rectangle_width/2)
+        parent_x = clade_position[parent]*scale_x + offset_x - (rectangle_width/2)
+        child_x = clade_position[child]*scale_x + offset_x + (rectangle_width/2)
 
         #draws the first (horizontal) rectangle
-        canvas.create_rectangle((parent_position, parent_height), (child_position, (parent_height + rectangle_width)), fill=connection_colour, outline=connection_colour)
+        canvas.create_rectangle((parent_x, parent_y), 
+                                (child_x, (parent_y + rectangle_width)), 
+                                fill=connection_colour, 
+                                outline=connection_colour)
         #draws the second (vertical) rectangle
-        canvas.create_rectangle(((child_position - rectangle_width), parent_height), (child_position, child_height), fill=connection_colour, outline=connection_colour)
+        canvas.create_rectangle(((child_x - rectangle_width), parent_y), 
+                                (child_x, child_y), 
+                                fill=connection_colour, 
+                                outline=connection_colour)
+        
     else:
         # calculates the position in pixels
-        parent_position = clade_position[parent]*scale_x + offset_x + (rectangle_width/2)
-        child_position = clade_position[child]*scale_x + offset_x - (rectangle_width/2)
+        parent_x = clade_position[parent]*scale_x + offset_x + (rectangle_width/2)
+        child_x = clade_position[child]*scale_x + offset_x - (rectangle_width/2)
 
         #draws the rectangle
-        canvas.create_rectangle((parent_position, parent_height), (child_position, child_height), fill=connection_colour, outline=connection_colour)
+        canvas.create_rectangle((parent_x, parent_y),
+                                (child_x, child_y),
+                                fill=connection_colour,
+                                outline=connection_colour)
         
 #draws the main structure of the cladogram
 def draw_cladogram(clade):
