@@ -4,21 +4,26 @@ import json
 import tkinter as tk
 from tkinter import font as tkfont
 
-#Creating the dictionaries that contain all the information for each clade
-clade_name = {}
-clade_children = {}
-clade_height = {}
-clade_position = {}
+def create_basic_data():
+    global clade_name
+    global clade_children
+    global clade_height
+    global clade_position
+    global leaf_list
+    global has_error
+    global error_string
+    #Creating the dictionaries that contain all the information for each clade
+    clade_name = {}
+    clade_children = {}
+    clade_height = {}
+    clade_position = {}
 
-#list of all the leaf keys (clades without children)
-leaf_list = []
+    #list of all the leaf keys (clades without children)
+    leaf_list = []
 
-#the key for the root clade
-root = ""
-
-#for error checking
-has_error = False
-error_string = ""
+    #for error checking
+    has_error = False
+    error_string = ""
 # function for creating a clade
 def create_clade(key, name, children, height, position):
     clade_name[key] = name
@@ -160,76 +165,93 @@ def error_test_one_input():
         error_string += "Error: there must be more than 1 clade inputted. "
 
 
-
 #non-setup data creation code starts here
+def generate_data():
+    global clade_root
+    global error_string
+    global has_error
+    global leaf_list
+    # ["0123456789012345678901234567890123456789012345", "0123456789012345678901234567890123456789012345"]
+    #the user input
+    #test input A: [[["clade zero"]], "clade one", ["clade two", ["clade three", "clade four", [[[0]], "clade five"], "clade six"]]]
+    #test input B: [[["000", "001"], ["010", "011"]], [["100", "101"], ["110", "111"]]]
+    #test input C: ["name", ["namename", ["namenamenamename", ["namenamenamenamenamenamenamename", ["namenamenamenamenamenamenamenamenamenamenamenamenamenamenamename"]]]]]
+    #test input D: [[["clade number one", "second clade", "clade that sure does exist (three)"]], [["this clade is named clade four"], ["clade 5"], ["clade ----> 6"]], ["the evil cursed clade (7)", "clade number eight", 9]]
+    user_input_string = input("enter input:")
+    try:
+        user_input = json.loads(user_input_string)
+    except:
+        has_error = True
+        error_string += "Error: Invalid input "
 
-# ["0123456789012345678901234567890123456789012345", "0123456789012345678901234567890123456789012345"]
-#the user input
-#test input A: [[["clade zero"]], "clade one", ["clade two", ["clade three", "clade four", [[[0]], "clade five"], "clade six"]]]
-#test input B: [[["000", "001"], ["010", "011"]], [["100", "101"], ["110", "111"]]]
-#test input C: ["name", ["namename", ["namenamenamename", ["namenamenamenamenamenamenamename", ["namenamenamenamenamenamenamenamenamenamenamenamenamenamenamename"]]]]]
-#test input D: [[["clade number one", "second clade", "clade that sure does exist (three)"]], [["this clade is named clade four"], ["clade 5"], ["clade ----> 6"]], ["the evil cursed clade (7)", "clade number eight", 9]]
-user_input_string = input("enter input:")
-try:
-    user_input = json.loads(user_input_string)
-except:
-    has_error = True
-    error_string += "Error: Invalid input "
-
-error_test_general()
-if has_error == False:
-    #generates the leaves of the user input
-    generate_leaves(locate_leaves(user_input))
     error_test_general()
-if has_error == False:
-    #converts the input into keys
-    cladogram_instructions = convert_input_to_keys(user_input, leaf_list, 0)[0]
-    error_test_general()
-if has_error == False:
-    #generates the all clades in the cladogram and the appropriate data
-    clade_root = generate_cladogram(cladogram_instructions)
-    error_test_general()
-if has_error == False:
-    #prints data
-    # print(clade_name)
-    # print(clade_children)
-    # print(clade_height)
-    # print(clade_position)
-    # print(user_input)
-    print(leaf_list)
-    # print(cladogram_instructions)
-else:
-    #prints the error message
-    print(error_string)
+    if has_error == False:
+        #generates the leaves of the user input
+        generate_leaves(locate_leaves(user_input))
+        error_test_general()
+    if has_error == False:
+        #converts the input into keys
+        cladogram_instructions = convert_input_to_keys(user_input, leaf_list, 0)[0]
+        error_test_general()
+    if has_error == False:
+        #generates the all clades in the cladogram and the appropriate data
+        clade_root = generate_cladogram(cladogram_instructions)
+        error_test_general()
+    if has_error == False:
+        #prints data
+        # print(clade_name)
+        # print(clade_children)
+        # print(clade_height)
+        # print(clade_position)
+        # print(user_input)
+        print(leaf_list)
+        # print(cladogram_instructions)
+    else:
+        #prints the error message
+        print(error_string)
 
 
 
 
     
+def create_canvas():
+    global has_error
+    global canvas
+    global max_x
+    global max_y
+    global offset_x
+    global offset_y
+    global scale_x
+    global scale_y
+    global canvas_width
+    global canvas_height
+    global rectangle_width
+    global connection_colour
+    global text_colour
+    if has_error == False:
+        # Create the main window
+        global root
+        root = tk.Tk()
+        root.title("cladogram")
 
-if has_error == False:
-    # Create the main window
-    root = tk.Tk()
-    root.title("cladogram")
+        # Create a canvas
+        dimensions = calculate_dimensions()
+        canvas_width, canvas_height = dimensions, dimensions
+        canvas = tk.Canvas(root, width=canvas_width, height=canvas_height, bg='white')
+        canvas.pack(padx=10, pady=10)
 
-    # Create a canvas
-    dimensions = calculate_dimensions()
-    canvas_width, canvas_height = dimensions, dimensions
-    canvas = tk.Canvas(root, width=canvas_width, height=canvas_height, bg='white')
-    canvas.pack(padx=10, pady=10)
+        # Calculate scaling factors and offsets
+        max_x = max(clade_position.values())
+        max_y = max(clade_height.values())
+        offset_x = round(canvas_width/10)
+        offset_y = round(canvas_height/10)
+        scale_x = (canvas_width - (2*offset_x)) / max_x  # Leave some margin
+        scale_y = (canvas_height - (2*offset_y)) / max_y  # Leave some margin
 
-    # Calculate scaling factors and offsets
-    max_x = max(clade_position.values())
-    max_y = max(clade_height.values())
-    offset_x = round(canvas_width/10)
-    offset_y = round(canvas_height/10)
-    scale_x = (canvas_width - (2*offset_x)) / max_x  # Leave some margin
-    scale_y = (canvas_height - (2*offset_y)) / max_y  # Leave some margin
-
-    #appearance variables
-    rectangle_width = 1 + round(dimensions/200)
-    connection_colour = "#000000"
-    text_colour = "#000000"
+        #appearance variables
+        rectangle_width = 1 + round(dimensions/200)
+        connection_colour = "#000000"
+        text_colour = "#000000"
 
 
 #draws the lines connecting a parent clade and child clade
@@ -345,10 +367,20 @@ def draw_root():
     #draws the rectangle
     canvas.create_rectangle((top_position, top_height), (bottom_position, bottom_height), fill=connection_colour, outline=connection_colour)
 
+def draw_on_canvas():
+    global has_error
+    global clade_root
+    global leaf_list
+    global root
+    if has_error == False:
+        draw_cladogram(clade_root)
+        write_leaves(leaf_list)
+        draw_root()
 
-if has_error == False:
-    draw_cladogram(clade_root)
-    write_leaves(leaf_list)
-    draw_root()
+        root.mainloop()
 
-    root.mainloop()
+if __name__ == "__main__":
+    create_basic_data()
+    generate_data()
+    create_canvas()
+    draw_on_canvas()
