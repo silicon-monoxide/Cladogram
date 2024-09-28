@@ -276,11 +276,11 @@ def draw_connection(parent, child):
         child_x = clade_position[child]*scale_x + offset_x - (rectangle_width/2)
 
         #draws the first (horizontal) rectangle
-        draw.rectangle([(parent_x, parent_y), (child_x, (parent_y + rectangle_width))], 
+        draw.rectangle([(child_x, parent_y), (parent_x, (parent_y + rectangle_width))], 
                                 fill=connection_colour, 
                                 outline=connection_colour)
         #draws the second (vertical) rectangle
-        draw.rectangle([((child_x + rectangle_width), parent_y), (child_x, child_y)], 
+        draw.rectangle([(child_x, parent_y), ((child_x + rectangle_width), child_y)], 
                                 fill=connection_colour, 
                                 outline=connection_colour)
         
@@ -304,7 +304,7 @@ def draw_connection(parent, child):
         child_x = clade_position[child]*scale_x + offset_x - (rectangle_width/2)
 
         #draws the rectangle
-        draw.rectangle([(parent_x, parent_y), (child_x, child_y)],
+        draw.rectangle([(child_x, parent_y), (parent_x, child_y)],
                                 fill=connection_colour,
                                 outline=connection_colour)
         
@@ -340,7 +340,7 @@ def write_leaves(leaf_list):
 
         # generates a font to write the leaf
         size = calculate_font_size(clade_name[leaf], len(leaf_list))
-        font = tkfont.Font(family="Consolas", size=size)
+        ###font = tkfont.Font(family="Consolas", size=size)
         ###canvas.create_text(text_position, text_height, text=name, fill=text_colour, font=font)
 
 
@@ -360,7 +360,7 @@ def draw_root():
     top_position = clade_position[clade_root]*scale_x + offset_x - (rectangle_width/2)
 
     #draws the rectangle
-    ###canvas.create_rectangle((top_position, top_height), (bottom_position, bottom_height), fill=connection_colour, outline=connection_colour)
+    draw.rectangle([(top_position, top_height), (bottom_position, bottom_height)], fill=connection_colour, outline=connection_colour)
 
 def draw_on_canvas():
     global has_error
