@@ -4,7 +4,7 @@ import json
 import tkinter as tk
 from tkinter import font as tkfont
 #import PIL
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 def create_basic_data():
     global clade_name
@@ -340,8 +340,8 @@ def write_leaves(leaf_list):
 
         # generates a font to write the leaf
         size = calculate_font_size(clade_name[leaf], len(leaf_list))
-        ###font = tkfont.Font(family="Consolas", size=size)
-        ###canvas.create_text(text_position, text_height, text=name, fill=text_colour, font=font)
+        font = ImageFont.truetype("Inconsolata.ttf", size)
+        draw.text((text_position, text_height), name, fill=text_colour, font=font, anchor="mt")
 
 
 
