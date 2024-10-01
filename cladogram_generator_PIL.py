@@ -314,11 +314,14 @@ def draw_cladogram(clade):
         draw_connection(clade, child)
         draw_cladogram(child)
 
-def calculate_font_size(string, leaf_count):
+def calculate_font_size(string, leaf_count, is_end):
     proportion = 1/leaf_count
-    default_max = 16
-
-    result = (60*default_max*proportion)/len(string)
+    default_max = 20
+    end_proportion = 1/9
+    if is_end == True and proportion >= end_proportion:
+        result = (60*default_max*end_proportion)/len(string)
+    else:
+        result = (60*default_max*proportion)/len(string)
 
     if result > default_max:
         return default_max
@@ -334,14 +337,21 @@ def write_leaves(leaf_list):
 
     # sets the height the text is written from
     text_height = canvas_height - (0.8*offset_y)
+    counter = 0
     for leaf in leaf_list:
         text_position = clade_position[leaf]*scale_x + offset_x
         name = clade_name[leaf]
+        is_end = False
+        if counter == 0 or counter == (len(leaf_list)-1):
+            is_end = True
 
         # generates a font to write the leaf
-        size = calculate_font_size(clade_name[leaf], len(leaf_list))
+        size = calculate_font_size(clade_name[leaf], len(leaf_list), is_end)
         font = ImageFont.truetype("Inconsolata.ttf", size)
         draw.text((text_position, text_height), name, fill=text_colour, font=font, anchor="mt")
+        print(str(counter) + ":" + str(size))
+
+        counter += 1
 
 
 
