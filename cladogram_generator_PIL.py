@@ -142,7 +142,13 @@ def calculate_dimensions():
     # else:
     #     return 150
 
-    return 800
+    dimensions = input("image height/width (in pixels):")
+    try:
+        dimensions = int(dimensions)
+    except:
+        dimensions = 800
+        print("Error: invalid dimensions. Defaulting to 800")
+    return dimensions
 
 
 # checks for errors
@@ -206,8 +212,9 @@ def generate_data():
         # print(clade_height)
         # print(clade_position)
         # print(user_input)
-        print(leaf_list)
+        # print(leaf_list)
         # print(cladogram_instructions)
+        pass
     else:
         #prints the error message
         print(error_string)
@@ -315,18 +322,25 @@ def draw_cladogram(clade):
         draw_cladogram(child)
 
 def calculate_font_size(string, leaf_count, is_end):
+    global canvas_width
     proportion = 1/leaf_count
-    default_max = 20
+    default_max = canvas_width/40
     end_proportion = 1/9
+
     if is_end == True and proportion >= end_proportion:
         result = (60*default_max*end_proportion)/len(string)
     else:
         result = (60*default_max*proportion)/len(string)
 
     if result > default_max:
-        return default_max
+        result = int(default_max)
     else:
-        return int(result)
+        result = int(result)
+    
+    if result <= 0:
+        result = 1
+    
+    return result
 
 def write_leaves(leaf_list):
     global offset_x
@@ -349,7 +363,7 @@ def write_leaves(leaf_list):
         size = calculate_font_size(clade_name[leaf], len(leaf_list), is_end)
         font = ImageFont.truetype("Inconsolata.ttf", size)
         draw.text((text_position, text_height), name, fill=text_colour, font=font, anchor="mt")
-        print(str(counter) + ":" + str(size))
+        # print(str(counter) + ":" + str(size))
 
         counter += 1
 
