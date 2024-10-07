@@ -256,7 +256,9 @@ def create_canvas():
         scale_y = (canvas_height - (2*offset_y)) / max_y  # Leave some margin
 
         #appearance variables
-        rectangle_width = 1 + round(dimensions/200)
+        rectangle_width = round(dimensions/200)
+        if rectangle_width < 1:
+            rectangle_width = 1
         connection_colour = (0, 0, 0)
         text_colour = (0, 0, 0)
 
@@ -325,7 +327,7 @@ def calculate_font_size(string, leaf_count, is_end):
     global canvas_width
     proportion = 1/leaf_count
     default_max = canvas_width/40
-    end_proportion = 1/9
+    end_proportion = 1/5
 
     if is_end == True and proportion >= end_proportion:
         result = (60*default_max*end_proportion)/len(string)
