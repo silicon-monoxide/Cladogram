@@ -126,7 +126,7 @@ def generate_cladogram(instructions):
     
     return key
 
-def calculate_dimensions(dimension):
+def calculate_dimensions():
     # global leaf_list
 
     # # a list of the lengths of each name in the list
@@ -142,7 +142,7 @@ def calculate_dimensions(dimension):
     # else:
     #     return 150
 
-    dimensions = dimension
+    dimensions = input("image height/width (in pixels):")
     try:
         dimensions = int(dimensions)
     except:
@@ -174,7 +174,7 @@ def error_test_one_input():
 
 
 #non-setup data creation code starts here
-def generate_data(user_input_string):
+def generate_data():
     global clade_root
     global error_string
     global has_error
@@ -185,6 +185,7 @@ def generate_data(user_input_string):
     #test input B: [[["000", "001"], ["010", "011"]], [["100", "101"], ["110", "111"]]]
     #test input C: ["name", ["namename", ["namenamenamename", ["namenamenamenamenamenamenamename", ["namenamenamenamenamenamenamenamenamenamenamenamenamenamenamename"]]]]]
     #test input D: [[["clade number one", "second clade", "clade that sure does exist (three)"]], [["this clade is named clade four"], ["clade 5"], ["clade ----> 6"]], ["the evil cursed clade (7)", "clade number eight", 9]]
+    user_input_string = input("enter input:")
     try:
         user_input = json.loads(user_input_string)
     except:
@@ -222,7 +223,7 @@ def generate_data(user_input_string):
 
 
     
-def create_canvas(dimension):
+def create_canvas():
     global has_error
     global max_x
     global max_y
@@ -241,7 +242,7 @@ def create_canvas(dimension):
         global draw
         global cladogram_image
         white = (255, 255, 255)
-        dimensions = calculate_dimensions(dimension)
+        dimensions = calculate_dimensions()
         canvas_width, canvas_height = dimensions, dimensions
         cladogram_image = Image.new("RGB", (canvas_width, canvas_height), white)
         draw = ImageDraw.Draw(cladogram_image)
@@ -401,8 +402,8 @@ def draw_on_canvas():
         cladogram_image.save(filename)
 
 
-def run_program(user_input_string, dimension):
+if __name__ == "__main__":
     create_basic_data()
-    generate_data(user_input_string)
-    create_canvas(dimension)
+    generate_data()
+    create_canvas()
     draw_on_canvas()
