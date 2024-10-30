@@ -222,7 +222,7 @@ def generate_data(user_input_string):
 
 
     
-def create_canvas(dimension):
+def create_canvas(dimension, line_width):
     global has_error
     global max_x
     global max_y
@@ -255,11 +255,22 @@ def create_canvas(dimension):
         scale_y = (canvas_height - (2*offset_y)) / max_y  # Leave some margin
 
         #appearance variables
-        rectangle_width = round(dimensions/200)
+        #line/rectange width presets (sets to a proportion of the dimensions)
+        if line_width == "Large":
+            rectangle_width = round(dimensions/100)
+        elif line_width == "Medium":
+            rectangle_width = round(dimensions/200)
+        elif line_width == "Small":
+            rectangle_width = round(dimensions/400)
+        elif line_width == "Smallest":
+            rectangle_width = 1
+        #makes sure it is never below 1
         if rectangle_width < 1:
             rectangle_width = 1
+        #colours
         connection_colour = (0, 0, 0)
         text_colour = (0, 0, 0)
+        print(line_width)
 
 
 #draws the lines connecting a parent clade and child clade
@@ -401,8 +412,16 @@ def draw_on_canvas():
         cladogram_image.save(filename)
 
 
-def run_program(user_input_string, dimension):
+def run_program(user_input_string, dimension, line_width):
+    # main function that then calls all other functions
     create_basic_data()
     generate_data(user_input_string)
-    create_canvas(dimension)
+    create_canvas(dimension, line_width)
     draw_on_canvas()
+
+# for manual input (not using website or another file)
+if __name__ == "__main__":
+    input1 = input("input:")
+    input2 = input("image height/width (in pixels):")
+    run_program(input1, input2)
+    print(len(["test", "test"]))
