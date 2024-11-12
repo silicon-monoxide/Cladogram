@@ -14,6 +14,14 @@ user_input_linew = st.selectbox(
 #if both have been filled out
 if user_input and user_input_dimensions:
     # run the cladogram image generator
-    clade_gen.run_program(user_input, user_input_dimensions, user_input_linew)
-    #display the image
+    clade_gen.run_program(
+        user_input, 
+        user_input_dimensions, 
+        line_width=user_input_linew
+        )
+    #display the image (with a title above it)
+    st.markdown("# Cladogram")
     st.image("cladogram.png", output_format="PNG")
+
+    #optional settings
+    st.markdown("# Advanced settings")

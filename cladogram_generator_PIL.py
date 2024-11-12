@@ -270,7 +270,6 @@ def create_canvas(dimension, line_width):
         #colours
         connection_colour = (0, 0, 0)
         text_colour = (0, 0, 0)
-        print(line_width)
 
 
 #draws the lines connecting a parent clade and child clade
@@ -402,7 +401,6 @@ def draw_on_canvas():
     global has_error
     global clade_root
     global leaf_list
-    global root
     if has_error == False:
         draw_cladogram(clade_root)
         write_leaves(leaf_list)
@@ -412,7 +410,7 @@ def draw_on_canvas():
         cladogram_image.save(filename)
 
 
-def run_program(user_input_string, dimension, line_width):
+def run_program(user_input_string, dimension, *, line_width="Medium"):
     # main function that then calls all other functions
     create_basic_data()
     generate_data(user_input_string)
@@ -424,4 +422,3 @@ if __name__ == "__main__":
     input1 = input("input:")
     input2 = input("image height/width (in pixels):")
     run_program(input1, input2)
-    print(len(["test", "test"]))
