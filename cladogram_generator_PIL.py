@@ -410,7 +410,7 @@ def draw_on_canvas():
         cladogram_image.save(filename)
 
 
-def run_program(user_input_string, dimension, *, line_width="Medium"):
+def run_program(user_input_string, dimension, *, line_width="Medium", heights_list=[]):
     # main function that then calls all other functions
     create_basic_data()
     generate_data(user_input_string)
