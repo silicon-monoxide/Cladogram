@@ -23,11 +23,11 @@ if user_input and user_input_dimensions:
     user_lists = json.loads(user_input) #Note: maybe remove the line from the PIL file and do it all here?
     leaf_names = clade_gen.locate_leaves(user_lists)
 
-    #list of heights of leaves
+    #list of heights of leaves, generated from a slider for each leaf (optional settings)
     heights = []
     if adv_set:
         for leaf in leaf_names:
-            heights.append(st.slider(leaf+" height", 1, len(leaf_names), 1))
+            heights.append(st.slider(leaf+" height", 0, len(leaf_names), 0))
     
     # run the cladogram image generator
     clade_gen.run_program(user_input, 

@@ -71,6 +71,23 @@ def generate_leaves(name_list):
         leaf_list.append(key)
         leaf_counter += 1
 
+def generate_high_leaves(name_list, heights_list):
+    global has_error
+    global error_string
+    leaf_counter = 0
+    #error test to check if name list and heights list ahve the same length
+    if len(name_list) != len(heights_list):
+        has_error = True
+        error_string += "Error: length of name list and height list do not match "
+        return
+
+
+    while leaf_counter < len(name_list):
+        key = "clade" + str(leaf_counter)
+        create_clade(key, name_list[leaf_counter], [], heights_list[leaf_counter], float(leaf_counter))
+        leaf_list.append(key)
+        leaf_counter += 1
+
 #takes the user input (nested lists with strings) and converts it into something that generate_leaves can process
 def locate_leaves(user_input):
     name_list = []
@@ -174,7 +191,7 @@ def error_test_one_input():
 
 
 #non-setup data creation code starts here
-def generate_data(user_input_string):
+def generate_data(user_input_string, heights_list):
     global clade_root
     global error_string
     global has_error
@@ -193,8 +210,23 @@ def generate_data(user_input_string):
 
     error_test_general()
     if has_error == False:
-        #generates the leaves of the user input
-        generate_leaves(locate_leaves(user_input))
+        #sets the list of heights to be empty if no values are above zero
+        if len(heights_list) >= 2:
+            if max(heights_list) == 0:
+                heights_list = []
+        
+        # if the heights list is empty use the simpler version of the function
+        # that has all leaf heights set to zero. Else use the complex version
+        if heights_list == []:
+            #generates the leaves of the user input
+            generate_leaves(locate_leaves(user_input))
+        elif len(heights_list) >= 2:
+            #generates the leaves of the user input
+            generate_high_leaves(locate_leaves(user_input), heights_list)
+        else:
+            has_error = True
+            error_string += "Error: Heights list seems to have a length of one "
+
         error_test_general()
     if has_error == False:
         #converts the input into keys
@@ -413,7 +445,7 @@ def draw_on_canvas():
 def run_program(user_input_string, dimension, *, line_width="Medium", heights_list=[]):
     # main function that then calls all other functions
     create_basic_data()
-    generate_data(user_input_string)
+    generate_data(user_input_string, heights_list)
     create_canvas(dimension, line_width)
     draw_on_canvas()
 
