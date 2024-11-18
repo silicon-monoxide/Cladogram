@@ -390,13 +390,15 @@ def write_leaves(leaf_list):
     global offset_y
     global canvas_height
     global scale_x
+    global scale_y
     global text_colour
 
-    # sets the height the text is written from
-    text_height = canvas_height - (0.8*offset_y)
     counter = 0
     for leaf in leaf_list:
+        # sets the height and position the text is written from
+        text_height = canvas_height - (0.8*offset_y) - (clade_height[leaf]*scale_y)
         text_position = clade_position[leaf]*scale_x + offset_x
+
         name = clade_name[leaf]
         is_end = False
         if counter == 0 or counter == (len(leaf_list)-1):
