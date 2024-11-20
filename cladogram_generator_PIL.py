@@ -364,11 +364,15 @@ def draw_cladogram(clade):
         draw_connection(clade, child)
         draw_cladogram(child)
 
-def calculate_font_size(string, leaf_count, is_end):
+def calculate_font_size(string, leaf_count, is_end, is_alone):
     global canvas_width
     proportion = 1/leaf_count
     default_max = canvas_width/40
     end_proportion = 1/5
+
+    # if the clade has no neighbours at its height multiply the proportion by two
+    if is_alone == True:
+        proportion = proportion * 2
 
     if is_end == True and proportion >= end_proportion:
         result = (60*default_max*end_proportion)/len(string)
@@ -380,6 +384,7 @@ def calculate_font_size(string, leaf_count, is_end):
     else:
         result = int(result)
     
+    # font size cannot be zero or negative
     if result <= 0:
         result = 1
     
@@ -400,12 +405,19 @@ def write_leaves(leaf_list):
         text_position = clade_position[leaf]*scale_x + offset_x
 
         name = clade_name[leaf]
+        # if the leaf is the first or least in the list set is_end to true
         is_end = False
         if counter == 0 or counter == (len(leaf_list)-1):
             is_end = True
+        
+        # if the height of the leaf is different to both its neighbors set is_alone to true
+        is_alone = False
+        if is_end == False:
+            if clade_height[leaf] != clade_height[leaf_list[counter-1]] and clade_height[leaf] != clade_height[leaf_list[counter+1]]:
+                is_alone = True
 
         # generates a font to write the leaf
-        size = calculate_font_size(clade_name[leaf], len(leaf_list), is_end)
+        size = calculate_font_size(clade_name[leaf], len(leaf_list), is_end, is_alone)
         font = ImageFont.truetype("Inconsolata.ttf", size)
         draw.text((text_position, text_height), name, fill=text_colour, font=font, anchor="mt")
         # print(str(counter) + ":" + str(size))
