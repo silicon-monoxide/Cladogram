@@ -372,7 +372,7 @@ def calculate_font_size(string, leaf_count, is_end, is_alone):
 
     # if the clade has no neighbours at its height multiply the proportion by two
     if is_alone == True:
-        proportion = proportion * 2
+        proportion *= 2
 
     if is_end == True and proportion >= end_proportion:
         result = (60*default_max*end_proportion)/len(string)

@@ -26,8 +26,10 @@ if user_input and user_input_dimensions:
     #list of heights of leaves, generated from a slider for each leaf (optional settings)
     heights = []
     if adv_set:
+        height_count = 0
         for leaf in leaf_names:
-            heights.append(st.slider(leaf+" height", 0, len(leaf_names), 0))
+            heights.append(st.slider(leaf+" height", 0, len(leaf_names), 0, key=height_count))
+            height_count += 1
     
     # run the cladogram image generator
     clade_gen.run_program(user_input, 
