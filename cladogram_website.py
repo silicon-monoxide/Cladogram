@@ -31,7 +31,7 @@ if user_input and user_input_dimensions:
             heights.append(st.slider(leaf+" height", 0, len(leaf_names), 0, key=height_count))
             height_count += 1
     
-    # run the cladogram image generator
+    #run the cladogram image generator
     clade_gen.run_program(user_input, 
         user_input_dimensions, 
         line_width=user_input_linew,
