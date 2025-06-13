@@ -254,7 +254,7 @@ def generate_data(user_input_string, heights_list):
 
 
     
-def create_canvas(dimension, line_width):
+def create_canvas(dimension_x, dimension_y, line_width):
     global has_error
     global max_x
     global max_y
@@ -273,8 +273,9 @@ def create_canvas(dimension, line_width):
         global draw
         global cladogram_image
         white = (255, 255, 255)
-        dimensions = calculate_dimensions(dimension)
-        canvas_width, canvas_height = dimensions, dimensions
+        canvas_width = calculate_dimensions(dimension_x)
+        canvas_height = calculate_dimensions(dimension_y)
+        dimensions = min(canvas_width, canvas_height)
         cladogram_image = Image.new("RGB", (canvas_width, canvas_height), white)
         draw = ImageDraw.Draw(cladogram_image)
 
@@ -456,15 +457,16 @@ def draw_on_canvas():
         cladogram_image.save(filename)
 
 
-def run_program(user_input_string, dimension, *, line_width="Medium", heights_list=[]):
+def run_program(user_input_string, dimension_x, dimension_y, *, line_width="Medium", heights_list=[]):
     # main function that then calls all other functions
     create_basic_data()
     generate_data(user_input_string, heights_list)
-    create_canvas(dimension, line_width)
+    create_canvas(dimension_x, dimension_y, line_width)
     draw_on_canvas()
 
 # for manual input (not using website or another file)
 if __name__ == "__main__":
     input1 = input("input:")
-    input2 = input("image height/width (in pixels):")
-    run_program(input1, input2)
+    input2 = input("image width (in pixels):")
+    input3 = input("image height (in pixels):")
+    run_program(input1, input2, input3)
