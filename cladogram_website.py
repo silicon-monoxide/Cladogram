@@ -4,7 +4,8 @@ import json
 
 # the two inputs (text)
 user_input = st.text_input("input:")
-user_input_dimensions = st.text_input("image height/width (in pixels):")
+user_input_dimensions_x = st.text_input("image width (in pixels):")
+user_input_dimensions_y = st.text_input("image height (in pixels):")
 
 #dropdown menu for line width
 user_input_linew = st.selectbox(
@@ -17,7 +18,9 @@ adv_set = st.checkbox("Advanced settings")
 
 
 #if both have been filled out
-if user_input and user_input_dimensions:
+if user_input and user_input_dimensions_x:
+    if not user_input_dimensions_y:
+        user_input_dimensions_y = user_input_dimensions_x
     # uses the locate_leaves function from the generator 
     # to get the list of leaf names
     user_lists = json.loads(user_input) #Note: maybe remove the line from the PIL file and do it all here?
@@ -33,7 +36,8 @@ if user_input and user_input_dimensions:
     
     #run the cladogram image generator
     clade_gen.run_program(user_input, 
-        user_input_dimensions, 
+        user_input_dimensions_x,
+        user_input_dimensions_y,
         line_width=user_input_linew,
         heights_list=heights
     )
