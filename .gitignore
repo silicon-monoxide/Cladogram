@@ -1,2 +1,6 @@
 venv/
 venv
+stream_lit_options/
+__pycache__/
+cladogram.png
+font_change_example.py
